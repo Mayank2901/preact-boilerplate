@@ -1,0 +1,391 @@
+// @import 'purecss/base';
+// @import 'purecss/buttons';
+// @import 'purecss/forms';
+// @import 'purecss/grids';
+// @import 'purecss/grids-responsive';
+// @import 'purecss/menus';
+// @import 'purecss/tables';
+// @import 'animate.css';
+
+/*! bulma.io v0.3.1 | MIT License | github.com/jgthms/bulma */
+
+@charset "utf-8";
+@import "bulma/utilities/_all";
+@import "bulma/base/_all";
+@import "bulma/elements/_all";
+@import "bulma/components/_all";
+@import "bulma/grid/_all";
+@import "bulma/layout/_all";
+@import "bulma/elements/icon";
+@import "slidemenu";
+@font-face {
+  font-family:'OpenSans-Regular','Arial','Roboto-Regular';
+  src: url('/fonts/OpenSans-Regular.ttf')  format('truetype'),url('/fonts/Arial.ttf')  format('truetype'),url('/fonts/Roboto-Regular.ttf')  format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+h1{
+  font-family: 'OpenSans-Regular';
+}
+
+h2,h3,h4,h5,h6{
+  font-family: 'Arial';
+}
+
+p{
+  font-family: 'Arial';
+}
+
+html,body{
+  .home.section{
+    padding:0%;
+    min-height: 800px;
+    margin:0 auto;
+    max-width: 972px !important;
+    .columns{
+        margin:0 auto;
+        max-width: 100% !important;
+    }
+    font-size: 79%;
+    tr{
+        &:before {
+            width: 30px;
+            height: 60px;
+            border-right: solid 30px white;
+            border-bottom: solid 30px transparent;
+            border-top: solid 30px transparent;
+        }
+    }
+
+  }
+}
+
+.create{
+    ::after{
+        margin-top: 0;
+    }
+}
+
+.fonty{
+  font-family: 'Tungsten-Semibold';
+  font-size: 20px;
+}
+
+.logo{
+    margin-top:-100px !important;
+}
+.custom_menu{
+    
+    max-height: 50px;
+      //background: url('/images/menu/middle.png') repeat-x;
+    a {
+          //font-size: 15px;
+          font-weight:bold;
+          background: url('/images/menu/middle.png') repeat-x;
+          border-bottom: 0px;
+    }
+  }
+
+  .custom_menu.left::before{
+    background: url('/images/menu/left.png') no-repeat;
+    content:' ';
+    width:4%;
+  }
+  .left.custom_menu::after{
+    width: 41%;
+    content: ' ';
+    background: url('/images/menu/middle.png') repeat-x;
+  }
+  .custom_menu,.custom_menu:first-child{
+    border-radius:0px !important;
+  }
+
+  .right.custom_menu::before{
+    content: ' ';
+    background: url('/images/menu/middle.png') repeat-x;
+  }
+  .right.custom_menu::after{
+    width: 2%;
+    content: ' ';
+    background: url('/images/menu/right.png') no-repeat;
+  }
+
+  .white_color{
+    color:white;
+  }
+
+  .black_color{
+    color:black;
+  }
+
+.bg {
+    min-height: 150px !important;
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.bg>* {
+    z-index: 1;
+}
+
+.bg::after {
+    content: " ";
+    opacity: 0.3;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    display: block;
+}
+
+.bg1::after {
+    background: url('/images/C2C-Rotating-banners-Parallax01.jpg');
+}
+
+.bg2::after {
+    background: url('https://caretocall.com/assets/images/banners/About-Page.jpg');
+}
+
+.stop-scrolling {
+    height: 100%;
+    overflow: hidden;
+}
+
+@keyframes react-progress-spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.app-loader {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    animation: all 200ms;
+    opacity: 0.9;
+}
+
+.popover {
+    opacity: 0;
+    position: absolute;
+    transition: opacity .2s ease-in-out;
+    visibility: hidden;
+}
+
+.popover-trigger:hover+.popover {
+    opacity: 1;
+    visibility: visible;
+}
+
+$side-padding: 15px;
+
+.popover {
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .3);
+    box-sizing: border-box;
+    color: rgb(30, 30, 30);
+    margin-top: 10px;
+    overflow: hidden;
+    width: 300px;
+    h1 {
+        background-color: rgb(237, 237, 237);
+        border-bottom: 1px solid rgb(225, 225, 225);
+        font-size: 18px;
+        font-weight: normal;
+        margin: 0;
+        padding: 5px $side-padding;
+    }
+    p {
+        font-size: 16px;
+        padding: 0 $side-padding;
+    }
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #fff inset !important;
+    -webkit-transition-delay: 9999s;
+    -webkit-transition: color 9999s ease-out, background-color 9999s ease-out;
+}
+
+.animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.fadeIn {
+    -webkit-animation-name: fadeIn;
+    animation-name: fadeIn;
+}
+
+@-webkit-keyframes fadeInDown {
+    from {
+        opacity: 0;
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+    }
+}
+
+.fadeInDown {
+    -webkit-animation-name: fadeInDown;
+    animation-name: fadeInDown;
+}
+
+@-webkit-keyframes fadeInUp {
+    from {
+        opacity: 0;
+        -webkit-transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0);
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        -webkit-transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0);
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+    }
+}
+
+.fadeInUp {
+    -webkit-animation-name: fadeInUp;
+    animation-name: fadeInUp;
+}
+
+
+/* Generated with Bounce.js. Edit at https://goo.gl/PwHKV8 */
+
+.modalss {
+    animation: fade 1000ms linear both;
+}
+
+
+/* Generated with Bounce.js. Edit at https://goo.gl/YWJPvV */
+
+@keyframes fade {
+    0% {
+        transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    }
+    4.3% {
+        transform: matrix3d(1.514, 0, 0, 0, 0, 1.514, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    }
+    8.61% {
+        transform: matrix3d(1.879, 0, 0, 0, 0, 1.879, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    }
+    12.91% {
+        transform: matrix3d(2.052, 0, 0, 0, 0, 2.052, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    }
+    17.22% {
+        transform: matrix3d(2.093, 0, 0, 0, 0, 2.093, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    }
+    28.33% {
+        transform: matrix3d(2.021, 0, 0, 0, 0, 2.021, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    }
+    39.44% {
+        transform: matrix3d(1.994, 0, 0, 0, 0, 1.994, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    }
+    61.66% {
+        transform: matrix3d(2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    }
+    83.98% {
+        transform: matrix3d(2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    }
+    100% {
+        transform: matrix3d(2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    }
+}
+
+.animation-target {
+    animation: animation 1200ms linear both;
+}
+
+
+/* Generated with Bounce.js. Edit at https://goo.gl/IeJm7t */
+
+@keyframes animation {
+    0% {
+        transform: matrix3d(0.8, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    }
+    5.71% {
+        transform: matrix3d(0.875, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    }
+    11.31% {
+        transform: matrix3d(0.927, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    }
+    17.02% {
+        transform: matrix3d(0.962, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    }
+    22.62% {
+        transform: matrix3d(0.983, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    }
+    28.33% {
+        transform: matrix3d(0.995, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    }
+    45.15% {
+        transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    }
+    72.57% {
+        transform: matrix3d(1.001, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    }
+    100% {
+        transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    }
+}

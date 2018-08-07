@@ -1,0 +1,31 @@
+/* Menu */
+
+.sidemenu-wrap {
+    position: fixed;
+    z-index: 999;
+    background: #ffffff;
+    width: 280px;
+    height: 100%;
+    top: 0;
+    right: 0;
+    -webkit-transform: translate3d(110%, 0, 0);
+    transform: translate3d(110%, 0, 0);
+    -webkit-transition: -webkit-transform 0.6s;
+    transition: transform 0.6s;
+    -webkit-transition-timing-function: cubic-bezier(0.7, 0, 0.3, 1);
+    transition-timing-function: cubic-bezier(0.7, 0, 0.3, 1);
+    -webkit-box-shadow: -5px 4px 25px -6px rgba(0, 0, 0, 0.58);
+    -moz-box-shadow: -5px 4px 25px -6px rgba(0, 0, 0, 0.58);
+    box-shadow: -5px 4px 25px -6px rgba(0, 0, 0, 0.58);
+}
+
+.sidemenu {
+    height: 100%;
+    color: #64697d;
+    text-align: right;
+}
+
+.show-sidemenu .sidemenu-wrap {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
