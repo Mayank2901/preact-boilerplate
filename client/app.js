@@ -1,13 +1,20 @@
 import { h, render } from 'preact';
 import { Router, browserHistory } from 'react-router'
+require('jquery-form-validator')
+require('modal')
 const rootRoute = {
   childRoutes: [ 
     {
       path: '/',
       component: require('./components/Home'),
-      // childRoutes: [
-      //     require('./routes/NewEvent'),
-      // ]
+    },
+    {
+      path: '/dashboard',
+      component: require('./components/dashboard'),
+    },
+    {
+      path: '/addusers',
+      component: require('./components/add_users'),
     },
   ]
   
@@ -21,6 +28,5 @@ render((
     />
   </div>
 ), document.body)
-
 
 require('preact/devtools');

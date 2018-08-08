@@ -13,7 +13,7 @@ module.exports = function(gulp, options, plugins) {
 
 
 
-        var srcThing = gulp.src(['sass/pure.scss']);
+        var srcThing = gulp.src(['sass/style.css']);
         console.log(options.argv.min)
         return srcThing
         .pipe(plugins.sass())

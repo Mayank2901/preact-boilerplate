@@ -7,7 +7,7 @@ const BabiliPlugin = require('babili-webpack-plugin');
 
 const URL = "http://route-to-production"
 
-const API = (process.env.NODE_ENV == 'production' ? "http://route-to-production" : "http://another-route")
+const API = (process.env.NODE_ENV == 'production' ? "http://localhost:8080/api" : "http://localhost:8080/api")
 
 let knownOptions = {
     string: 'min',
@@ -34,7 +34,9 @@ let plugins = [
         'URL': JSON.stringify(URL)
     }),
     new webpack.ProvidePlugin({
-        page: 'page'
+        page: 'page',
+        jQuery: 'jquery-slim',
+        $: 'jquery-slim',
     })
 ]
 
@@ -84,9 +86,11 @@ let config = {
             'react': 'preact-compat',
             'react-dom': 'preact-compat',
             'create-react-class': 'preact-compat/lib/create-react-class',
+            'jquery-slim': __dirname + '/node_modules/jquery/dist/jquery.js',
 		    'public': path.join(__dirname, "public"),
             'app':path.join(__dirname, "client/app"),
 		    'api':path.join(__dirname, "client/api"),
+            'modal': __dirname + '/sass/bootstrap-4.0.0/js/src/modal.js',
             //'preact-router':path.join(__dirname, "plugins/preact-router.js"),
         },
     },
