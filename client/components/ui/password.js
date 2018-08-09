@@ -55,14 +55,6 @@ export class Password extends Component {
     ):null;
   }
 
-  Success(success){
-    if(success){
-      return <div class="alert alert-success" role="alert">
-        User successfully added.
-      </div>
-    }
-  }
-
   change_pass(props){
     if(this.state.password != "" ){
       $('#password').html("Updating...")
@@ -108,7 +100,7 @@ export class Password extends Component {
                           { this.ErrorList(this.state.errors) }
                         </div>
                         {this.Success(this.state.sucess)}
-                        <button type="button" class="btn btn-lg btn-primary" id="ref_btn" style="padding: 2%;margin-top: 4%;" id="password" onclick={this.change_pass.bind(this)}>Chnage Password</button>
+                        <button type="button" class="btn btn-lg btn-primary" style="padding: 2%;margin-top: 4%;" id="password" onclick={this.change_pass.bind(this)}>Change Password</button>
                       </form>
                   </div>
               </div>

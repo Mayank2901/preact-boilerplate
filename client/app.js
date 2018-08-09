@@ -16,6 +16,10 @@ const rootRoute = {
       path: '/addusers',
       component: require('./components/add_users'),
     },
+    {
+      path: '/chats',
+      component: require('./components/chats'),
+    },
   ]
   
 }
