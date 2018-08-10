@@ -21,37 +21,103 @@ class Chats extends Component {
     }
   }
 
+  update_msgs(arr){
+    api.api.custom('chats')
+    .put({
+      msgs : arr
+    })
+    .then((response)=>{
+      console.log('response',response.body().data())
+    })
+    .catch((err)=>{
+        console.log('err',err)
+    })
+  }
+
   componentDidMount(){
     this.load_chat = this.load_chat.bind(this)
-    api.socket.on('msg_success', function(data){
-      console.log('msg_success',data)
-      var chat = that.state.chats
-      console.log('chat',chat)
-      chat[that.state.active_chat].chats.unshift(data.data);
-      that.setState({
-        chats : chat
-      })
+    this.update_msgs = this.update_msgs.bind(this)
+    api.socket.on('msg_recieved', function(data){
+      console.log('msg_recieved',data,window.location.pathname,window.location.pathname == "/chats",that.state.chats.length,api.currentUser._id,data.data.recipient == api.currentUser._id,data.data.recipient)
+      if(data.data.recipient == api.currentUser._id){
+        console.log('new message')
+        if(window.location.pathname == "/chats"){
+          for(var i=0;i<that.state.chats.length;i++){
+            console.log('i',data.data.conversationId,that.state.chats[i].conversationId)
+            if(data.data.conversationId == that.state.chats[i].conversationId){
+              var val = i
+              var chat = that.state.chats
+              console.log('chat',chat,that.state.active_chat,i)
+              chat[i].body = data.data.body;
+              that.setState({
+                chats : chat
+              })
+              if(that.state.active_chat == i){
+                chat[i].chats.unshift(data.data);
+                setTimeout(()=>{
+                  var objDiv = document.getElementById("msg");
+                  objDiv.scrollTop = objDiv.scrollHeight;
+                },500);
+                setTimeout(function(){
+                  console.log('timeout',val)
+                  console.log('that',that.state.chats[val].chats.length)
+                  var arr = [];
+                  for(var j=0;j<that.state.chats[val].chats.length;j++){
+                    console.log('read',that.state.chats[val].chats[j].read)
+                    if(!that.state.chats[val].chats[j].read){
+                      arr.push(that.state.chats[val].chats[j]._id)
+                      that.state.chats[val].chats[j].read = true
+                      console.log('chat',that.state.chats[val].chats[j])
+                    }
+                    if((j+1) == that.state.chats[val].chats.length){
+                      that.forceUpdate()
+                    }
+                  }
+                  that.update_msgs(arr)
+                },10000);
+              }
+            }
+          }
+        }
+      }
+      else{
+        var chat = that.state.chats
+        console.log('chat',chat,data)
+        for(var i=0;i<that.state.chats.length;i++){
+          console.log('i',data.data.conversationId,that.state.chats[i].conversationId,data.data.conversationId == that.state.chats[i].conversationId)
+          if(data.data.conversationId == that.state.chats[i].conversationId){
+            console.log('chat[that.state.active_chat].chats.read0',chat[that.state.active_chat].chats[i])
+            //chat[that.state.active_chat].chats[i].read = true
+            chat[i].body = data.data.body;
+            chat[that.state.active_chat].chats.unshift(data.data);
+            console.log('chat[that.state.active_chat].chats.read1',chat[that.state.active_chat].chats[i].read)
+            that.setState({
+              chats : chat
+            })
+            console.log('chat[that.state.active_chat].chats.read2',that.state.chats[that.state.active_chat].chats[i].read)
+            setTimeout(()=>{
+              var objDiv = document.getElementById("msg");
+              objDiv.scrollTop = objDiv.scrollHeight;
+            },500);
+          }
+        }
+      }
     });
     api.checkSession((valid) => {
       console.log('valid',valid)
       if(valid) {
-          if(api.currentUser.type == 0){
-              api.api.custom('chats')
-              .get('')
-              .then((response)=>{
-                console.log('response',response.body().data())
-                this.setState({
-                  chats : response.body().data().data.conversations,
-                  loading: false
-                })
-              })
-              .catch((err)=>{
-                  console.log('err',err)
-              })
-          }
-          else{
-              browserHistory.push("/")
-          }
+          api.api.custom('chats')
+          .get('')
+          .then((response)=>{
+            console.log('response',response.body().data())
+            this.setState({
+              chats : response.body().data().data.conversations,
+              loading: false
+            })
+          })
+          .catch((err)=>{
+              console.log('err',err)
+          })
       }
       else{
           browserHistory.push("/")
@@ -84,10 +150,24 @@ class Chats extends Component {
       var chat = this.state.chats
       console.log('chat',chat)
       chat[i].chats = response.body().data().data.conversations;
+      setTimeout(()=>{
+        var arr = [];
+        for(var j=0;j<that.state.chats[i].chats.length;j++){
+          if(!that.state.chats[i].chats[j].read){
+            arr.push(that.state.chats[i].chats[j]._id)
+            that.state.chats[i].chats[j].read = true
+          }
+        }
+        that.update_msgs(arr)
+      },10000);
       this.setState({
         chats : chat,
         active_chat: i,
       })
+      setTimeout(()=>{
+        var objDiv = document.getElementById("msg");
+        objDiv.scrollTop = objDiv.scrollHeight;
+      },500);
     })
     .catch((err)=>{
         console.log('err',err)
@@ -104,6 +184,7 @@ class Chats extends Component {
       token : cookie.load('sowil_session'),
       composedMessage : this.state.message,
       conversationId : this.state.chats[this.state.active_chat].conversation._id,
+      recipient : this.state.chats[this.state.active_chat].conversation.participants[0]._id==api.currentUser._id ? this.state.chats[this.state.active_chat].conversation.participants[1]._id : this.state.chats[this.state.active_chat].conversation.participants[0]._id,
     }
     api.socket.emit('message',data)
   }
@@ -121,45 +202,44 @@ class Chats extends Component {
               <h2>Chats <button type="button" class="btn btn-primary" style="float:right;" onclick={this.open_msg_modal.bind(this)}>New Chat</button></h2>
               <hr/>
             </div>
-            <div class="col-3" style="border: 1px solid #dee2e6;">
-              <table class="table table-borderless">
+            <div class="col-3" style="border: 1px solid #dee2e6;padding-top: 1%;">
+              <div>
                 {
                   this.state.chats.map((chat,i)=>{
                     if(i==0){
-                      return <a onclick={()=>{this.load_chat(i)}}><tbody>
-                        <tr>
-                          <td style="border-top: 0px">{chat.conversation.participants[0]._id==api.currentUser._id ? chat.conversation.participants[1].username : chat.conversation.participants[0].username}</td>
-                        </tr>
-                        <tr>
-                          <td style="border-top: 0px">{chat.body}</td>
-                        </tr>
-                      </tbody></a>
+                      return <a onclick={()=>{this.load_chat(i)}}>
+                        <p style="font-weight: bold;">{chat.conversation.participants[0]._id==api.currentUser._id ? chat.conversation.participants[1].username : chat.conversation.participants[0].username}</p>
+                        <p style="border-top: 0px">{chat.body}<span style="float: right;color: #1579f6;">{chat.chats ? (chat.chats[0].author == api.currentUser._id ? "" : (chat.chats[0].read ? "" : "New Message")) : (chat.author._id == api.currentUser._id ? "" : (chat.read ? "" : "New Message"))}</span></p>
+                        <hr/>
+                        <br/>
+                      </a>
                     }
                     else{
-                      return <a onclick={()=>{this.load_chat(i)}}><tbody>
-                        <tr>
-                          <td>{chat.conversation.participants[0]._id==api.currentUser._id ? chat.conversation.participants[1].username : chat.conversation.participants[0].username}</td>
-                        </tr>
-                        <tr>
-                          <td style="border-top: 0px">{chat.body}</td>
-                        </tr>
-                      </tbody></a>
+                      return <a onclick={()=>{this.load_chat(i)}}>
+                        <p style="font-weight: bold;">{chat.conversation.participants[0]._id==api.currentUser._id ? chat.conversation.participants[1].username : chat.conversation.participants[0].username}</p>
+                        <p style="border-top: 0px">{chat.body}<span style="float: right;color: #1579f6;">{chat.chats ? (chat.chats[0].author == api.currentUser._id ? "" : (chat.chats[0].read ? "" : "New Message")) : (chat.author._id == api.currentUser._id ? "" : (chat.read ? "" : "New Message"))}</span></p>
+                        <hr/>
+                        <br/>
+                      </a>
                     }
                   })
                 }
-              </table>
+              </div>
             </div>
             <div class="col-9">
               {
                 this.state.active_chat >=0 ?
                   <div>
                     <h3>{this.state.chats[this.state.active_chat].conversation.participants[0]._id==api.currentUser._id ? this.state.chats[this.state.active_chat].conversation.participants[1].username : this.state.chats[this.state.active_chat].conversation.participants[0].username}</h3> 
-                    <div style="height:600px;overflow:scroll;">
+                    <div id="msg" style="height:600px;overflow:scroll;">
                     {
                       this.state.chats[this.state.active_chat].chats.slice(0).reverse().map((chat)=>{
                         return(
                           <div>
-                            <p style="font-weight: bold;">{chat.author==this.state.chats[this.state.active_chat].conversation.participants[1]._id ? this.state.chats[this.state.active_chat].conversation.participants[1].username : this.state.chats[this.state.active_chat].conversation.participants[0].username}</p>
+                            <p style="font-weight: bold;">
+                              {chat.author==this.state.chats[this.state.active_chat].conversation.participants[1]._id ? this.state.chats[this.state.active_chat].conversation.participants[1].username : this.state.chats[this.state.active_chat].conversation.participants[0].username}
+                              {chat.author==api.currentUser._id ? "" : <span style="float: right;color: #1579f6;">{chat.read ? "" : "New"}</span>}
+                            </p>
                             <p>{chat.body}</p>
                           </div>
                         )
