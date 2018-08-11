@@ -19,6 +19,21 @@ class Home extends Component {
 
   componentDidMount(){
     this.login = this.login.bind(this)
+    api.checkSession((valid) => {
+      console.log('valid',valid)
+      var user_type;
+      if(valid) {
+        if(api.currentUser.type == 0){
+          browserHistory.push("/dashboard")
+        }
+        if(api.currentUser.type == 1 || api.currentUser.type == 2){
+          browserHistory.push("/dashboard/user")
+        }
+      }
+      else{
+          browserHistory.push("/")
+      }
+    })
   }
 
   componentDidUpdate(){
