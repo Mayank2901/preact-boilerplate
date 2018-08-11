@@ -53,13 +53,19 @@ class Home extends Component {
       "password": this.state.password
     })
     .then((response)=>{
+      console.log('response',response.body().data().data)
       this.setState({show_msg : false})
       $('#login_btn').html("Login")
       $('#login_btn').prop("disabled", false)
       document.cookie = 'sowil_session=;expires=Thu, 01 Jan 1970 00:00:01 GMT;'
       document.cookie = "sowil_session=" + response.body().data().data.token
       api.api.header('Authorization','Bearer ' + cookie.load("sowil_session"))
-      //api.currentUser = response.body().data().data.user
+      if(response.body().data().data.user.type == 0){
+        browserHistory.push('/dashboard')
+      }
+      if(response.body().data().data.user.type == 1 || response.body().data().data.user.type == 2){
+        browserHistory.push('/dashboard/user')
+      }
     })
     .catch((err)=>{
       $('#login_btn').html("Login")

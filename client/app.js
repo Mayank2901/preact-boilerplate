@@ -13,6 +13,10 @@ const rootRoute = {
       component: require('./components/dashboard'),
     },
     {
+      path: '/dashboard/user',
+      component: require('./components/users'),
+    },
+    {
       path: '/addusers',
       component: require('./components/add_users'),
     },
