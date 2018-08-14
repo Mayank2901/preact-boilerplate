@@ -233,6 +233,7 @@ class Dashboard extends Component {
                               }
                             </tbody>
                           </table>
+                          {this.state.patients.length == 0 ? <p>No patients found....</p> : ""}
                         </div>
                       </div>
                       :
@@ -262,6 +263,7 @@ class Dashboard extends Component {
                               }
                             </tbody>
                           </table>
+                          {this.state.doctors.length == 0 ? <p>No doctors found....</p> : ""}
                         </div>
                       </div>
                     }

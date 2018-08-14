@@ -51,7 +51,8 @@ export class Chat extends Component {
       _id : api.currentUser._id,
       new_message : true,
       recipient : this.state.email,
-      composedMessage : this.state.message
+      composedMessage : this.state.message,
+      username : api.currentUser.username
     }
     api.socket.emit('message',data)
   }

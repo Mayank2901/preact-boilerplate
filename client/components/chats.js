@@ -86,21 +86,27 @@ class Chats extends Component {
         for(var i=0;i<that.state.chats.length;i++){
           console.log('i',data.data.conversationId,that.state.chats[i].conversationId,data.data.conversationId == that.state.chats[i].conversationId)
           if(data.data.conversationId == that.state.chats[i].conversationId){
-            console.log('chat[that.state.active_chat].chats.read0',chat[that.state.active_chat].chats[i])
             //chat[that.state.active_chat].chats[i].read = true
             chat[i].body = data.data.body;
-            chat[that.state.active_chat].chats.unshift(data.data);
-            console.log('chat[that.state.active_chat].chats.read1',chat[that.state.active_chat].chats[i].read)
+            if(chat[i].chats){
+              chat[i].chats.unshift(data.data);
+              setTimeout(()=>{
+                var objDiv = document.getElementById("msg");
+                objDiv.scrollTop = objDiv.scrollHeight;
+              },500);
+            }
             that.setState({
               chats : chat
             })
-            console.log('chat[that.state.active_chat].chats.read2',that.state.chats[that.state.active_chat].chats[i].read)
-            setTimeout(()=>{
-              var objDiv = document.getElementById("msg");
-              objDiv.scrollTop = objDiv.scrollHeight;
-            },500);
           }
         }
+      }
+      if(that.state.chats.length == 0){
+        var chat = that.state.chats
+        chat.push(data.data.message);
+        that.setState({
+          chats : chat
+        })
       }
     });
     api.checkSession((valid) => {
@@ -202,30 +208,37 @@ class Chats extends Component {
               <h2>Chats <button type="button" class="btn btn-primary" style="float:right;" onclick={this.open_msg_modal.bind(this)}>New Chat</button></h2>
               <hr/>
             </div>
-            <div class="col-3" style="border: 1px solid #dee2e6;padding-top: 1%;">
-              <div>
-                {
-                  this.state.chats.map((chat,i)=>{
-                    if(i==0){
-                      return <a onclick={()=>{this.load_chat(i)}}>
-                        <p style="font-weight: bold;">{chat.conversation.participants[0]._id==api.currentUser._id ? chat.conversation.participants[1].username : chat.conversation.participants[0].username}</p>
-                        <p style="border-top: 0px">{chat.body}<span style="float: right;color: #1579f6;">{chat.chats ? (chat.chats[0].author == api.currentUser._id ? "" : (chat.chats[0].read ? "" : "New Message")) : (chat.author._id == api.currentUser._id ? "" : (chat.read ? "" : "New Message"))}</span></p>
-                        <hr/>
-                        <br/>
-                      </a>
-                    }
-                    else{
-                      return <a onclick={()=>{this.load_chat(i)}}>
-                        <p style="font-weight: bold;">{chat.conversation.participants[0]._id==api.currentUser._id ? chat.conversation.participants[1].username : chat.conversation.participants[0].username}</p>
-                        <p style="border-top: 0px">{chat.body}<span style="float: right;color: #1579f6;">{chat.chats ? (chat.chats[0].author == api.currentUser._id ? "" : (chat.chats[0].read ? "" : "New Message")) : (chat.author._id == api.currentUser._id ? "" : (chat.read ? "" : "New Message"))}</span></p>
-                        <hr/>
-                        <br/>
-                      </a>
-                    }
-                  })
-                }
+            {
+              this.state.chats.length == 0 ?
+              <div class="col-3">
+                <p>NO CHATS FOUND...</p>
               </div>
-            </div>
+              :
+              <div class="col-3" style="border: 1px solid #dee2e6;padding-top: 1%;">
+                <div>
+                  {
+                    this.state.chats.map((chat,i)=>{
+                      if(i==0){
+                        return <a onclick={()=>{this.load_chat(i)}}>
+                          <p style="font-weight: bold;">{chat.conversation.participants[0]._id==api.currentUser._id ? chat.conversation.participants[1].username : chat.conversation.participants[0].username}</p>
+                          <p style="border-top: 0px">{chat.body}<span style="float: right;color: #1579f6;">{chat.chats ? (chat.chats[0].author == api.currentUser._id ? "" : (chat.chats[0].read ? "" : "New Message")) : (chat.author._id == api.currentUser._id ? "" : (chat.read ? "" : "New Message"))}</span></p>
+                          <hr/>
+                          <br/>
+                        </a>
+                      }
+                      else{
+                        return <a onclick={()=>{this.load_chat(i)}}>
+                          <p style="font-weight: bold;">{chat.conversation.participants[0]._id==api.currentUser._id ? chat.conversation.participants[1].username : chat.conversation.participants[0].username}</p>
+                          <p style="border-top: 0px">{chat.body}<span style="float: right;color: #1579f6;">{chat.chats ? (chat.chats[0].author == api.currentUser._id ? "" : (chat.chats[0].read ? "" : "New Message")) : (chat.author._id == api.currentUser._id ? "" : (chat.read ? "" : "New Message"))}</span></p>
+                          <hr/>
+                          <br/>
+                        </a>
+                      }
+                    })
+                  }
+                </div>
+              </div>
+            }
             <div class="col-9">
               {
                 this.state.active_chat >=0 ?
